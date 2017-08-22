@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Andrea Fioraldi
+# License http://opensource.org/licenses/mit-license.php MIT License
+
 #change ip and port
 $ip_address = "192.168.1.40"
 $port = 4444
