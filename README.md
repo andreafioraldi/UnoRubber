@@ -9,3 +9,7 @@ Transform your Arduino Uno into a bridge to install malware (only for educationa
 + Change the payload url and upload the UnoRubber_USB sketch selecting the board HoodLoader2 16u2
 + Upload the UnoRubber_IO sketch selecting the board HoodLoader2 Uno
 + Hack the world
+
+### Todo
++ Add the italian keyboard layout
++ Hack some friends PCs
