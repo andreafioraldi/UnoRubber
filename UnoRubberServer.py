@@ -17,7 +17,6 @@ def set_cmd():
     c = request.args.get("cmd", "")
     if c != "":
         waiting_cmd = c
-        output = output + c + "\n"
     return redirect("/")
 
 @app.route('/get_cmd')
@@ -37,6 +36,10 @@ def reset():
 @app.route('/update_output/', methods=['POST'])
 def update_output():
     global output
-    output = output + request.form['output']
+    output = request.form['output']
     #return redirect("/")
     return "DONE"
+
+if __name__ == "__main__":
+    app.run()
+

